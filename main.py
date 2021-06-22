@@ -9,9 +9,6 @@ import utils
 
 manager = DMManager('data.json')
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-
 
 intents = discord.Intents.default()
 intents.members = True
@@ -44,12 +41,11 @@ def main():
         raise ValueError(
             "Token is missing! Please add 'DM_BOT'={YOUR SECRET KEY} to your environment variables. ")
 
-   
     try:
         bot.run(TOKEN)
     except discord.errors.LoginFailure as e:
-        print(f"The token provided, '{TOKEN}' is invalid."
-              "Please provide a login/access token under DM_BOT in your environment vars.")
+        print(f"The token provided, '{TOKEN}' is invalid. Please provide"
+              "a login/access token under DM_BOT in your environment vars.")
 
 
 if __name__ == '__main__':
