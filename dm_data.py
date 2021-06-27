@@ -30,7 +30,7 @@ class DMManager:
 
 
     def save(self):
-        """Serializes dungeon master data to json and saves to `self.file_name`.
+        """Serializes user-data to json and saves to `self.file_name`.
     
         :raises OsError: if any error related to file IO occurs
         """
