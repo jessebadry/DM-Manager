@@ -2,7 +2,6 @@ import discord
 from discord.errors import *
 from discord.ext import commands
 import os
-import asyncio
 from dm_data import DMManager
 
 import utils
@@ -21,18 +20,21 @@ bot = commands.Bot(command_prefix='`')
 async def on_ready():
     print(f"Logged in as: {bot.user.name}, id: {bot.user.id}")
 
-"""Adds another user to this DM-Users initiative order list. """
+
 @bot.command()
 async def init_add(ctx, message):
-    usr_id = utils.get_usr_id(ctx)
-    print(message, 'from', usr_id)
+    """Adds another user to this DM-Users initiative order list. """
+    user_id = utils.get_user_id(ctx)
+    
+    
 
 
-"""Drives the main program.
 
-:raises ValueError: if the DM_BOT key is missing from the system environment variables. 
- """
 def main():
+    """Drives the main program.
+
+    :raises ValueError: if the DM_BOT key is missing from the system environment variables. 
+    """
 
     TOKEN = os.getenv('dm_bot')
 

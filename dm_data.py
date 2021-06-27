@@ -2,6 +2,7 @@
 
     This module acts as a wrapper around a dictionary to create 
 
+
 """
 
 import json
@@ -13,37 +14,37 @@ class DMManager:
        DM-Data for dnd purposes.
     """
 
-    """Constructs DMManager object.
-    
-    :param file_name: string
-    :precondition: file_name must be a valid path / accessible
-    """
+
     def __init__(self, file_name):
+        """Constructs DMManager object.
+    
+        :param file_name: string
+        :precondition: file_name must be a valid path / accessible
+        """
 
         self.file_name = file_name
 
         # Contains invidual users DM data
         # Stores discord-ids as keys and dicts as values for each individual user
-        self.dungeon_masters = {}
+        self.user_data = {}
 
-    """Serializes dungeon master data to json and saves to `self.file_name`.
-    
-    :raises OsError: if any error related to file IO occurs
-    """
+
     def save(self):
-
-        with open(self.file_name) as file:
-
-            json.dump(self.dungeon_masters, file)
-
-    """Writes key-value pair (user-id, value), to the DM-Manager object.
+        """Serializes dungeon master data to json and saves to `self.file_name`.
     
-    :param user_id: User.id
+        :raises OsError: if any error related to file IO occurs
+        """
 
-    :postcondition: self.dungeon_masters will contain the new key-value pair
-    :postcondition: self.dungeon_masters will be 
-    
-    """
-    def save_value(self, user_id, value):
-        self.dungeon_masters[user_id] = value
+        with open(self.file_name, 'w') as file:
+            json.dump(self.user_data, file)
+
+    def __save_value(self, user_id, value):
+        """Writes key-value pair (user-id, value), to the DM-Manager object.
+        
+        because this operation is potentially unsafe due to
+
+        :param user_id: string representing the DM user's discord ID number
+        :postcondition: self.dungeon_masters will contain the new key-value pair  
+        """
+        self.user_data[user_id] = value
         self.save()

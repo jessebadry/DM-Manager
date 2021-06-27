@@ -1,7 +1,8 @@
 """Contains miscellaneous utility functions """
 
 
-"""Extract user-id from message."""
-def get_usr_id(message):
+
+def get_user_id(member):
+    """Extract user-id from Member Object."""
     
-    return message.author.id
+    return member.author.id
