@@ -34,7 +34,7 @@ class DMManager:
 
         :postcondition: if no campaign is selected on creation, 
         the newly added campaign will be set as the selected campaign
-        
+
         """
         pass
 

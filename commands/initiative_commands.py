@@ -3,7 +3,6 @@ __all__ = ['init_add']
 from . error_handler import handle_errors
 
 
-
 @handle_errors
 async def init_add(context, number_message, dm_manager):
     raise NotImplementedError()
