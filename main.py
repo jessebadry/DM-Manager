@@ -1,8 +1,9 @@
+import commands as lib_commands
 import discord
 from discord.errors import *
 from discord.ext import commands
 import os
-from dm_data import DMManager
+from dm_manager import DMManager
 
 import utils
 
@@ -24,10 +25,7 @@ async def on_ready():
 @bot.command()
 async def init_add(ctx, message):
     """Adds another user to this DM-Users initiative order list. """
-    user_id = utils.get_user_id(ctx)
-    
-    
-
+    await lib_commands.init_add(ctx, message, manager)
 
 
 def main():
