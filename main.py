@@ -8,7 +8,7 @@ from dm_manager import DMManager
 import utils
 
 manager = DMManager('data.json')
-
+print('Manager loaded!')
 
 intents = discord.Intents.default()
 intents.members = True
@@ -26,6 +26,16 @@ async def on_ready():
 async def init_add(ctx, message):
     """Adds another user to this DM-Users initiative order list. """
     await lib_commands.init_add(ctx, message, manager)
+
+
+@bot.command()
+async def camp(ctx, key: str, value: str = None):
+    await lib_commands.camp(ctx, manager, key, value)
+
+
+@bot.command()
+async def add_camp(ctx, key: str, value: str = None):
+    await lib_commands.add_camp(ctx, manager, key, value)
 
 
 def main():
