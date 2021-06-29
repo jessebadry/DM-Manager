@@ -11,6 +11,7 @@ def line():
     """
 
     cf = currentframe()
+    
     return cf.f_back.f_lineno
 
 

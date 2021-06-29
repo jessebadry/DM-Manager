@@ -20,6 +20,8 @@ class InvalidKeyException(Exception):
 
 
 class NoCampaignSelectedError(Exception):
-    """This error is for when a user doesn't select a campaign. """
+    """An error that occurs when a user doesn't select a campaign. """
+
+
     def __init__(self):
         super().__init__(self)

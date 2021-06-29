@@ -1,8 +1,20 @@
+"""
+
+This is china's very own DnD bot ! :)
+
+Author: 
+
+
+
+"""
+
+
 import commands as lib_commands
 import discord
 from discord.errors import *
 from discord.ext import commands
 import os
+from commands.error_handler import handle_errors
 from dm_manager import DMManager
 
 import utils
@@ -17,25 +29,36 @@ intents.members = True
 bot = commands.Bot(command_prefix='`')
 
 
+def dm_command(func):
+    
+    name = func.__name__
+    func.__name__ = name+'1'
+
+    @handle_errors
+    async def inner(ctx):
+        print('inner=', args[0])
+        return func(*args, **kwargs)
+
+    print('name=', name)
+    inner.__name__ = name
+
+    return inner
+
+
 @bot.event
 async def on_ready():
     print(f"Logged in as: {bot.user.name}, id: {bot.user.id}")
 
 
 @bot.command()
-async def init_add(ctx, message):
-    """Adds another user to this DM-Users initiative order list. """
-    await lib_commands.init_add(ctx, message, manager)
+@dm_command
+async def init_add(context, number_message: str):
+    
+    raise NotImplementedError()
+    user_id = utils.get_user_id(context)
+    current_campaign = dm_manager.get_campaign()
 
-
-@bot.command()
-async def camp(ctx, key: str, value: str = None):
-    await lib_commands.camp(ctx, manager, key, value)
-
-
-@bot.command()
-async def add_camp(ctx, key: str, value: str = None):
-    await lib_commands.add_camp(ctx, manager, key, value)
+    dm_manager.add_init(int(number_message))
 
 
 def main():

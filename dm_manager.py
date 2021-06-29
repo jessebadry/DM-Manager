@@ -48,12 +48,13 @@ class DMManager:
 
         :return: dict of campaign dictionaries
         """
+
         return self.user_data['campaigns']
 
     def current_campaign(self):
         """Returns the currently selected campaign object."""
-        return self.get_campaigns()[self.user_data['selected_campaign']]
 
+        return self.get_campaigns()[self.user_data['selected_campaign']]
 
     def camp(self, key, value=None):
         """Get or set a field in the current campaign within user_data.
@@ -72,16 +73,21 @@ class DMManager:
          'The first tale of our epic adventure'
 
         """
+
         if not self.user_data['selected_campaign']:
             raise NoCampaignSelectedError()
+
         elif key not in CAMPAIGN_FIELDS:
             raise InvalidKeyException(key, 'campaign', CAMPAIGN_FIELDS)
 
         if value is None:
+
             return self.current_campaign()[key]
         else:
+
             self.current_campaign()[key] = value
-        
+            self.user_data_is_modified = True
+
     def add_camp(self, campaign_name, desc=''):
         """Adds campaign to the DM-Manager object.
 
@@ -92,6 +98,7 @@ class DMManager:
         likely need a custom exception
 
         """
+
         campaigns = self.get_campaigns() or {}
 
         if self.user_data['selected_campaign'] is None:
@@ -103,13 +110,12 @@ class DMManager:
         campaigns[campaign_name] = new_campaign
 
         self.user_data['campaigns'] = campaigns
-        
-        print(campaigns)
+
         self.save()
 
     def add_member(user, character_name):
         """Adds character to the currently selected campaign.
-
+d
         :param user: Discord User
         :param character_name: string 30 char limit
 
@@ -119,14 +125,12 @@ class DMManager:
         pass
 
     def load_user_data(self):
-        """Deserializes user-data to json and saves to `self.file_name`."""
+        """Deserializes user-ata to json and saves to `self.file_name`."""
 
         try:
 
             with open(self.file_name, 'r') as f:
-                data = json.load(f)
-                print(data)
-                self.user_data = data
+                self.user_data = json.load(f)
 
         except FileNotFoundError:
             self.user_data = dict_from_keys(USER_DATA_FIELDS)
