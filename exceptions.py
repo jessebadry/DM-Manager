@@ -1,4 +1,9 @@
 
+class InvalidCommandException(Exception):
+
+    def __init__(self):
+        super().__init__(self)
+
 
 class InvalidKeyException(Exception):
 
@@ -21,7 +26,6 @@ class InvalidKeyException(Exception):
 
 class NoCampaignSelectedError(Exception):
     """An error that occurs when a user doesn't select a campaign. """
-
 
     def __init__(self):
         super().__init__(self)

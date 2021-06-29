@@ -56,15 +56,15 @@ class DMManager:
 
         return self.get_campaigns()[self.user_data['selected_campaign']]
 
-    def camp(self, key, value=None):
+    def camp(self, key, value=None) -> (str or None):
         """Get or set a field in the current campaign within user_data.
 
 
          :precondition: `key` cannot be None or empty
          :postcondition: if value is None, return the string that belongs to `key` 
-         :postcondition: if value is string,set `key` to this value for the campaign data
+         :postcondition: if value is string, set `key` to this value for the campaign data
 
-         :return: string or None
+         :return: str | None
          :raises DMError: if `key` is not a valid campaign field name
 
          >>> manager = DMManager('data.json')
@@ -87,6 +87,7 @@ class DMManager:
 
             self.current_campaign()[key] = value
             self.user_data_is_modified = True
+            self.save()
 
     def add_camp(self, campaign_name, desc=''):
         """Adds campaign to the DM-Manager object.

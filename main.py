@@ -9,16 +9,16 @@ Author:
 """
 
 
-import commands as lib_commands
+from exceptions import InvalidCommandException
 import discord
 from discord.errors import *
 from discord.ext import commands
 import os
-from commands.error_handler import handle_errors
+
 from dm_manager import DMManager
-
+from error_handler import handle_errors
 import utils
-
+from argparse import ArgumentParser
 manager = DMManager('data.json')
 print('Manager loaded!')
 
@@ -29,20 +29,51 @@ intents.members = True
 bot = commands.Bot(command_prefix='`')
 
 
-def dm_command(func):
-    
-    name = func.__name__
-    func.__name__ = name+'1'
+def add_arguments(parser, args):
 
-    @handle_errors
-    async def inner(ctx):
-        print('inner=', args[0])
-        return func(*args, **kwargs)
+    for parser_arg in args:
 
-    print('name=', name)
-    inner.__name__ = name
+        arg_name = parser_arg[0]
 
-    return inner
+        if len(parser_arg) == 2:
+            arg_kwargs = parser_arg[1]
+
+        parser.add_argument(arg_name, **arg_kwargs)
+
+
+def dm_command(*args, **kwargs):
+    """Decorates func with handle_errors decorator and bot.command decorator.
+
+    :param func: an asynchronous function with a single paramater (discord context)
+    :precondition: func takes a single parameter (discord context)
+
+     """
+
+    parser = ArgumentParser()
+
+    add_arguments(parser, args)
+
+    def decorator(func):
+
+        @handle_errors
+        async def inner(context):
+            # Skip command name from msg_content
+            msg_content = context.message.content.split()[1:]
+
+            try:
+                args = parser.parse_args(msg_content)
+            except SystemExit:
+                raise InvalidCommandException()
+
+
+            return await func(context, args)
+
+        name = func.__name__
+        func.__name__ = ''
+        inner.__name__ = name
+        return bot.command()(inner)
+
+    return decorator
 
 
 @bot.event
@@ -50,15 +81,21 @@ async def on_ready():
     print(f"Logged in as: {bot.user.name}, id: {bot.user.id}")
 
 
-@bot.command()
-@dm_command
-async def init_add(context, number_message: str):
-    
+@dm_command()
+async def init_add(context, args):
     raise NotImplementedError()
     user_id = utils.get_user_id(context)
     current_campaign = dm_manager.get_campaign()
 
     dm_manager.add_init(int(number_message))
+
+
+@dm_command(("key", {}), ("--value", {'nargs': '*'}))
+async def camp(ctx, args):
+    value = ' '.join(args.value) if args.value else args.value
+    result = manager.camp(args.key, value)
+    if result:
+        await ctx.send(result)
 
 
 def main():

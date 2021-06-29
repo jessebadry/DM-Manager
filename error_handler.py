@@ -1,6 +1,6 @@
 from discord.errors import InvalidArgument
 from exceptions import *
-
+import traceback
 
 def handle_errors(func):
     """Implements the error system by try-excepting `func` callback.
@@ -31,7 +31,12 @@ def handle_errors(func):
             allowed_fields = err.allowed_fields
             fields = '\n'.join(allowed_fields)
             f"Allowed fields:\n       👇\n{fields}"
+        except InvalidCommandException as e:
+            await context.send("Invalid command!")
         except Exception as e:
+            # Debug
+            # TODO log instead of print?
+            traceback.print_exc()
             await context.send(f"Unexpected error occured.. Error: {e}")
 
     return inner
