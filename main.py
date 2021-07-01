@@ -9,6 +9,7 @@ Author:
 """
 
 
+from typing import Iterable
 from exceptions import InvalidCommandException
 import discord
 from discord.errors import *
@@ -29,7 +30,14 @@ intents.members = True
 bot = commands.Bot(command_prefix='`')
 
 
-def add_arguments(parser, args):
+def __add_arguments(parser, args):
+    """Adds arguments to argparser to parse from discord message.
+
+    :param ArgumentParser: argparse parser to parse args
+    :param tuple(str, dict): args is the parameters for each parser `add_argument` call
+
+    :postcondition: all arguments are added to the ArgumentParser
+    """
 
     for parser_arg in args:
 
@@ -41,17 +49,24 @@ def add_arguments(parser, args):
         parser.add_argument(arg_name, **arg_kwargs)
 
 
-def dm_command(*args, **kwargs):
+def dm_command(*argparse_args):
     """Decorates func with handle_errors decorator and bot.command decorator.
 
     :param func: an asynchronous function with a single paramater (discord context)
-    :precondition: func takes a single parameter (discord context)
+    :precondition: func takes a single parameter (discord context).\n
+    :precondition: argparse_args must be a list tuples of (str, dict) where
+    str is the arg name, and dict sets its argparse settings
 
+    :postcondition: `func` is double decorated, initially decorated around a decorated-function which will parse args and handle errors, 
+    then decorated this function with the discord bot.command decorator
+
+
+    :return: decorator function
      """
 
     parser = ArgumentParser()
 
-    add_arguments(parser, args)
+    __add_arguments(parser, argparse_args)
 
     def decorator(func):
 
@@ -65,12 +80,15 @@ def dm_command(*args, **kwargs):
             except SystemExit:
                 raise InvalidCommandException()
 
-
             return await func(context, args)
 
+        # Remove the original functions name and use this name for the inner function,
+        # this is to avoid conflicts with the discord command decorator
         name = func.__name__
         func.__name__ = ''
         inner.__name__ = name
+        #
+
         return bot.command()(inner)
 
     return decorator
@@ -92,10 +110,22 @@ async def init_add(context, args):
 
 @dm_command(("key", {}), ("--value", {'nargs': '*'}))
 async def camp(ctx, args):
-    value = ' '.join(args.value) if args.value else args.value
+
+    # `camp desc Our first campaign
+    # `camp desc -> Our first campaign
+
+    value = ' '.join(args.value) if isinstance(args.value, Iterable) else args.value
+
     result = manager.camp(args.key, value)
     if result:
         await ctx.send(result)
+
+
+@bot.command()
+async def normal_func(context, ):
+
+    # `normal_func 
+    pass
 
 
 def main():
