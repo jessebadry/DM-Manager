@@ -100,10 +100,6 @@ async def on_ready():
 @dm_command()
 async def init_add(context, args):
     raise NotImplementedError()
-    user_id = utils.get_user_id(context)
-    current_campaign = dm_manager.get_campaign()
-
-    dm_manager.add_init(int(number_message))
 
 
 @dm_command(("campaign_name", {}), ("--desc", {'nargs': '*'}))
