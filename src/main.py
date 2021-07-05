@@ -106,7 +106,7 @@ async def init_add(context, args):
     dm_manager.add_init(int(number_message))
 
 
-@dm_command(("campaign_name", {}), ("--desc", {}))
+@dm_command(("campaign_name", {}), ("--desc", {'nargs': '*'}))
 async def add_camp(ctx, args):
 
     # Assemble args
@@ -123,8 +123,9 @@ async def camp(ctx, args):
     # `camp desc Our first campaign
     # `camp desc -> Our first campaign
 
-    value = ' '.join(args.value) if isinstance(
-        args.value, Iterable) else args.value
+    value = ' '.join(args.value)\
+            if isinstance(args.value, Iterable)\
+            else args.value
 
     result = manager.camp(args.key, value)
 
