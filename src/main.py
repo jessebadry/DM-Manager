@@ -42,9 +42,7 @@ def __add_arguments(parser, args):
     for parser_arg in args:
 
         arg_name = parser_arg[0]
-
-        if len(parser_arg) == 2:
-            arg_kwargs = parser_arg[1]
+        arg_kwargs = parser_arg[1] if len(parser_arg) == 2 else {}
 
         parser.add_argument(arg_name, **arg_kwargs)
 
@@ -108,9 +106,9 @@ async def init_add(context, args):
     dm_manager.add_init(int(number_message))
 
 
-@dm_command(("campaign_name"), ("--desc"))
+@dm_command(("campaign_name", {}), ("--desc", {}))
 async def add_camp(ctx, args):
-    
+
     # Assemble args
     campaign_name = args.campaign_name
     # Run command function
