@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-   name='DM-Manager',
+   name='Dungeon-Master',
    version='1.0',
-   packages=['DM-Manager'],  #same as name
+   packages=['Dungeon-Master'],  #same as name
    install_requires=['discord.py'], #external packages as dependencies
 )
