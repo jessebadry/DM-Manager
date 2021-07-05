@@ -116,7 +116,7 @@ class DMManager:
 
     def add_member(user, character_name):
         """Adds character to the currently selected campaign.
-d
+
         :param user: Discord User
         :param character_name: string 30 char limit
 

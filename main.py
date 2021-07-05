@@ -117,15 +117,12 @@ async def camp(ctx, args):
     value = ' '.join(args.value) if isinstance(args.value, Iterable) else args.value
 
     result = manager.camp(args.key, value)
+    
     if result:
         await ctx.send(result)
 
 
-@bot.command()
-async def normal_func(context, ):
 
-    # `normal_func 
-    pass
 
 
 def main():
