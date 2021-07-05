@@ -1,1 +1,1 @@
-web: python src/main.py runserver 0.0.0.0:80
+web: python src/main.py
